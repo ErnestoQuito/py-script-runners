@@ -1,0 +1,12 @@
+# Carpetas
+.vscode/
+__pycache__/
+.pytest_cache
+venv_runners/
+
+
+# archivos
+*.csv
+*.xlsx
+*.xls
+*.log
