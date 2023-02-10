@@ -1,8 +1,9 @@
+"""
 import pymysql
 from sqlalchemy import create_engine
 
 conexion = pymysql.connect(
-                        host='http://hasber.net/phpmyadmin/',
+                        host='198.100.154.133',
                         port=3306,
                         user='admin_servicio',
                         password='ZJv5c7CspU',        
@@ -19,33 +20,22 @@ conexion.close()
 
 #print(engine)
 
-
 """
-#-------------------------------------------------------
-
-import mysql.connector
-from modules.config import MSSQLConection
-
-mssql = MSSQLConection()
-#mssql.open_conn()
-
-conexion = mysql.connector.connect(host={mssql.HOST},user={mssql.HOST},password={mssql.PASSWORD},db={mssql.NAME})
-mssql.conn = conexion
-if mssql.conn.is_connected():
-    print("Conexion existosa")
-else:
-    print("valide conexion")
 
 #-------------------------------------------------------
 
-import mysql.connector
 
-conexion = mysql.connector.connect(host='http://hasber.net/phpmyadmin/',port='3306', user='admin_servicio',password='ZJv5c7CspU',db='admin_servicio')
-cursor = conexion.cursor()
+from modules.services_db import MSSQLConection
 
-if cursor:
-    print("Conexion existosa")
-else:
-    print("valide conexion")
+mssql = MSSQLConection(h_host='198.100.154.133',h_db_name='admin_servicio',h_user='admin_servicio',h_pass='ZJv5c7CspU',h_port=3306)
+mssql.open_conn_pymysql()
+cursor = mssql.conn_pymysql.cursor()
 
-"""
+cursor.execute("select * from configuracion_sftp;")
+resultado=cursor.fetchone()
+print(resultado)
+
+
+mssql.close_conn()
+
+

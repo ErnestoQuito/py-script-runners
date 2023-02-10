@@ -25,31 +25,31 @@ def read_files_excel(path_file: str):
     df = pd.concat(all_files,ignore_index='True')  
     
     df.rename(columns={
-        'Guía' : 'Guia',
-        'Resolución' : 'Resolucion',
-        'Fecha Resolución' : 'FechaResolucion',
-        'Expediente' : 'Expediente',
-        'Teléfono' : 'Telefono',
-        'Nombre Cliente' : 'NombreCliente',
-        'Analista' : 'Analista',
-        'Fecha Despacho' : 'FechaDespacho',
-        'Dirección' : 'Direccion',
-        'Distrito' : 'Distrito',
-        'Provincia' : 'Provincia',
-        'Departamento' : 'Departamento',
-        'Anexo' : 'Anexo',
-        'Tipo Reenvío' : 'TipoReenvio',
-        'Tipo Solucion' : 'TipoSolucion',
-        'Número Reenvío' : 'NumeroReenvio',
-        'Correo electrónico' : 'CorreoElectronico',
-        'Fecha Reclamo' : 'FechaReclamo',
-        'Canal Despacho' : 'CanalDespacho',
-        'Instancia' : 'Instancia',
-        'NOTIFICACION_CORREO' : 'NotificacionCorreo',
-        'FileName' : 'FileName',
+        'Guía' : 'guia',
+        'Resolución' : 'resolucion',
+        'Fecha Resolución' : 'fecha_resolucion',
+        'Expediente' : 'expediente',
+        'Teléfono' : 'telefono',
+        'Nombre Cliente' : 'nombre_cliente',
+        'Analista' : 'analista',
+        'Fecha Despacho' : 'fecha_despacho',
+        'Dirección' : 'direccion',
+        'Distrito' : 'distrito',
+        'Provincia' : 'provincia',
+        'Departamento' : 'departamento',
+        'Anexo' : 'anexo',
+        'Tipo Reenvío' : 'tipo_reenvio',
+        'Tipo Solucion' : 'tipo_solucion',
+        'Número Reenvío' : 'numero_reenvio',
+        'Correo electrónico' : 'correo_electronico',
+        'Fecha Reclamo' : 'fecha_reclamo',
+        'Canal Despacho' : 'canal_despacho',
+        'Instancia' : 'instancia',
+        'NOTIFICACION_CORREO' : 'notificacion_correo',
+        'FileName' : 'file_name',
     }, inplace=True)
 
-    df['LoadDate']= datetime.now()
+    df['load_date']= datetime.now()
 
 
     return df
