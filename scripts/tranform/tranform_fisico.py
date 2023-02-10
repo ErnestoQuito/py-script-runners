@@ -1,13 +1,17 @@
-def tranform_data_fisico(data):
-    # TODO
-    data['fecha_carga']= datetime.now()
-    data2 = data[""] == data[]
-    
-    retun data_clean
+import pandas as pd
+from datetime import datetime
+from pandas import DataFrame
+#import numpy as np
 
-ef tranform_data_fisico_actual(data):
+def tranform_data_fisico(data: DataFrame):
     # TODO
-    data['fecha_carga']= datetime.now()
-    data2 = data[""] == data[]
+    #data = np.where((data['CorreoElectronico'].isnull()) & (data['id']< 1000))
+    dataf = data[data['CorreoElectronico'].isnull()]
     
-    retun data_clean
+    return dataf
+
+def tranform_data_digital(data: DataFrame):
+    # TODO
+    dataf = data[data['CorreoElectronico'].notnull()]
+        
+    return dataf
