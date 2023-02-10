@@ -3,7 +3,7 @@
 __pycache__/
 .pytest_cache
 venv_runners/
-
+.env
 
 # archivos
 *.csv

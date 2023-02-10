@@ -16,20 +16,23 @@ def copy_files(source: str, target: str):
     """
     return shutil.copy2(source, target)
 
-def find_excel(path_file):
+def find_excel(path_file: str):
     """Funcion ´para encontrar los archivos excel de un lista
 
     Args:
-        path_file (list): lista de archivos
+        path_file (str): ruta de archivos
 
     Returns:
         list: Retorna una lista solo con la ruta de los archivos excel
     """
+    files = finder_files(path_file)
+
     archivos=[]
 
-    for i in path_file:
+    for i in files:
         if i.endswith('.xls'):
             archivos.append(i)
     #tail = [os.path.basename(x) for x in  archivos]    
         
     return archivos
+    

@@ -1,16 +1,51 @@
-import os
-from modules.commons import find_excel
-from modules.module_read_files import read_files_excel
+import pymysql
+from sqlalchemy import create_engine
 
-path_file=['D:\\runners_source_files\\notificaciones\\2023\\02\\01\\Fisico 01.02.2023.xls', 'D:\\runners_source_files\\notificaciones\\2023\\02\\01\\Fisico 02.02.2023.xls',
-'D:\\runners_source_files\\notificaciones\\2023\\02\\01\\BUSINESS ANALYTICS 2021-2.pdf','D:\\runners_source_files\\notificaciones\\2023\\02\\01\\conf_hasber.txt']
+conexion = pymysql.connect(
+                        host='http://hasber.net/phpmyadmin/',
+                        port=3306,
+                        user='admin_servicio',
+                        password='ZJv5c7CspU',        
+                        database='admin_servicio',
+                    )
 
-lsfiles = find_excel(path_file)
+cursor=conexion.cursor()
+print(cursor)
+conexion.commit()
+conexion.close()
 
-print(lsfiles)
+#url="mysql+pymysql://{0}:{1}@{2}:{3}/{4}".format('admin_servicio', 'ZJv5c7CspU', 'http://hasber.net/phpmyadmin/', 3306, 'admin_servicio')
+#engine = create_engine(url)
 
-data = read_files_excel(lsfiles)
-
-print(len(data))
+#print(engine)
 
 
+"""
+#-------------------------------------------------------
+
+import mysql.connector
+from modules.config import MSSQLConection
+
+mssql = MSSQLConection()
+#mssql.open_conn()
+
+conexion = mysql.connector.connect(host={mssql.HOST},user={mssql.HOST},password={mssql.PASSWORD},db={mssql.NAME})
+mssql.conn = conexion
+if mssql.conn.is_connected():
+    print("Conexion existosa")
+else:
+    print("valide conexion")
+
+#-------------------------------------------------------
+
+import mysql.connector
+
+conexion = mysql.connector.connect(host='http://hasber.net/phpmyadmin/',port='3306', user='admin_servicio',password='ZJv5c7CspU',db='admin_servicio')
+cursor = conexion.cursor()
+
+if cursor:
+    print("Conexion existosa")
+else:
+    print("valide conexion")
+
+"""
