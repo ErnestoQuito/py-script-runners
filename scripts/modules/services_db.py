@@ -5,7 +5,7 @@ import os
 import mysql.connector
 import pymysql
 
-class MSSQLConection:
+class MariaDbConnection:
     HOST = ''
     NAME = ''
     USER = ''
@@ -13,6 +13,7 @@ class MSSQLConection:
     DRIVER = ''
 
     conn = None
+    conn_pymysql = None
     engine = None
 
     def __init__(self,h_host,h_db_name,h_user,h_pass,h_port):
@@ -21,11 +22,11 @@ class MSSQLConection:
         self.USER = h_user
         self.PASSWORD = h_pass
         self.PORT = h_port
- 
+
     def open_conn(self):
         #sc = f"DRIVER={self.DRIVER};SERVER={self.HOST};DATABASE={self.NAME};UID={self.USER};PWD={self.PASSWORD}"
         conexion = mysql.connector.connect(host=self.HOST,port=self.PORT,user=self.USER,password=self.PASSWORD,db=self.NAME)
-        self.conn = conexion        
+        self.conn = conexion
 
     def open_conn_engine(self):
         #sc = f"mssql+pyodbc://{self.USER}:{self.PASSWORD}@{self.HOST}:1433/{self.NAME}?driver={driver}"
@@ -37,7 +38,7 @@ class MSSQLConection:
         conexion = pymysql.connect(host=self.HOST,
                                     port=self.PORT,
                                     user=self.USER,
-                                    password=self.PASSWORD,        
+                                    password=self.PASSWORD,
                                     database=self.NAME,
                                 )
         self.conn_pymysql=conexion
@@ -48,6 +49,3 @@ class MSSQLConection:
 
         if self.conn_pymysql:
             self.conn_pymysql.close()
-
-            
-    

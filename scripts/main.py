@@ -1,9 +1,16 @@
 import os
-from modules.commons import finder_files
-from modules.commons import copy_files
+from modules.services_sftp import ServicesSFTP
 
-source_ = r"D:\runners_source_files\notificaciones\2023\02\01"
-target = r"D:\runners_target_files"
-for i in finder_files(source_):
-    a = copy_files(i, os.path.join(target, os.path.basename(i)))
-    print(a)
+host = '192.168.18.118'
+user = 'sftp'
+passw = 'sftp'
+known_hosts = 'C:\\Users\\lycan\\.ssh\\known_hosts'
+path_remote = '/home/sftp/notificacion/2023/02/01'
+
+services_ftp = ServicesSFTP(
+    host=host, user=user, password=passw
+)
+
+services_ftp.set_cnopts(known_hosts)
+
+services_ftp.list_files(remote_path_file=path_remote)
