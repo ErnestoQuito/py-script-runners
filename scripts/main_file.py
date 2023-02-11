@@ -21,7 +21,7 @@ conexion.close()
 #print(engine)
 
 """
-
+"""
 #-------------------------------------------------------
 
 
@@ -47,3 +47,13 @@ except Exception as err:
     print(err.__class__, err)
 finally:
     mssql.close_conn()
+
+
+"""
+from modules.module_read_files import read_pdf_paginas
+
+source_ = r"D:\runners_source_files\notificaciones\2023\02\01"
+
+var=read_pdf_paginas(source_)
+
+print(var)
