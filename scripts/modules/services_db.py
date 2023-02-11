@@ -5,7 +5,7 @@ import os
 import mysql.connector
 import pymysql
 
-class MSSQLConection:
+class MariaDbConnection:
     HOST = ''
     NAME = ''
     USER = ''
@@ -13,6 +13,7 @@ class MSSQLConection:
     DRIVER = ''
 
     conn = None
+    conn_pymysql = None
     engine = None
 
     def __init__(self,h_host,h_db_name,h_user,h_pass,h_port):

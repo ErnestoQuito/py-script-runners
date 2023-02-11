@@ -1,5 +1,5 @@
 
-def select_table(connect, table_name, id_table) -> dict:
+def select_table(connect, table_name, where_col, id_table) -> dict:
     """Funcion para obtener registro de tablas.
 
     Args:
@@ -12,7 +12,7 @@ def select_table(connect, table_name, id_table) -> dict:
     """
 
     cursor = connect.cursor()
-    cursor.execute(f'SELECT * FROM {table_name} WHERE id_sftp = {id_table};')
+    cursor.execute(f'SELECT * FROM {table_name} WHERE {where_col} = {id_table};')
     resultado=cursor.fetchone()
     columns: list = [col[0] for col in cursor.description]
     table_dict: dict = {}
