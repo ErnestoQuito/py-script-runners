@@ -33,9 +33,17 @@ cursor = mssql.conn_pymysql.cursor()
 
 cursor.execute("select * from configuracion_sftp;")
 resultado=cursor.fetchone()
+# print(cursor.description)
 print(resultado)
+try:
+    columns: list = [col[0] for col in cursor.description]
+    table_dict: dict = {}
+    for idx, i in enumerate(resultado):
+        table_dict[columns[idx]] = i
 
-
-mssql.close_conn()
-
-
+    print(table_dict)
+except Exception as err:
+    print('error')
+    print(err.__class__, err)
+finally:
+    mssql.close_conn()
