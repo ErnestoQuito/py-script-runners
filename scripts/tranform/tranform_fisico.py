@@ -10,8 +10,3 @@ def tranform_data_fisico(data: DataFrame):
     
     return dataf
 
-def tranform_data_digital(data: DataFrame):
-    # TODO
-    dataf = data[data['CorreoElectronico'].notnull()]
-        
-    return dataf
