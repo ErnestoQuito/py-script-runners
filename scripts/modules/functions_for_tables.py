@@ -21,3 +21,12 @@ def select_table(connect, table_name, where_col, id_table) -> dict:
         table_dict[columns[idx]] = i
 
     return table_dict
+
+def delete_table(connect, table_name, where_col, file_name: list) -> dict:
+
+    cursor = connect.cursor()
+    for i in file_name:
+        cursor.execute(cursor.execute(f"DELETE FROM {table_name} WHERE {where_col} = '{i}';"))
+        #cursor.commit()
+    cursor.close()
+    return True
