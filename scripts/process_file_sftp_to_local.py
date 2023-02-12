@@ -33,7 +33,10 @@ try:
     # LOCAL
     table_file: dict = select_table(maria.conn, table_name=TABLE_FILE, where_col=WHERE_COL_FILE, id_table=ID_TABLE_FILE)
     format_path_file_target: str = set_format_path_to_date(table_file['ruta_destino'], unix=False, auto_date=False, my_date=datetime(2023, 2, 1))
-    serv_sftp.download_files(remote_path_file=list_path_files, local_path_file=format_path_file_target)
+    result_path_files_saved = serv_sftp.download_files(
+        remote_path_file=list_path_files, local_path_file=format_path_file_target
+    )
+    
 
 except Exception as err:
     print(err.__class__, err)
