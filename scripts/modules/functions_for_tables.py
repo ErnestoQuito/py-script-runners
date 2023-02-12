@@ -1,3 +1,6 @@
+from sqlalchemy import text
+import pandas as pd
+from datetime import datetime, timedelta
 
 def select_table(connect, table_name, where_col, id_table) -> dict:
     """Funcion para obtener registro de tablas.
@@ -22,11 +25,51 @@ def select_table(connect, table_name, where_col, id_table) -> dict:
 
     return table_dict
 
+def get_date():
+    date_string_ini = (datetime.now() - timedelta(days=0)).strftime('%Y-%m-%d 00:00:00') 
+    date_string_fin = (datetime.now() - timedelta(days=0)).strftime('%Y-%m-%d 23:59:59')
+
+    date_start = datetime.strptime(date_string_ini, "%Y-%m-%d %H:%M:%S")
+    date_end = datetime.strptime(date_string_fin, "%Y-%m-%d %H:%M:%S")      
+
+    return date_start, date_end
+
 def delete_table(connect, table_name, where_col, file_name: list) -> dict:
 
     cursor = connect.cursor()
     for i in file_name:
-        cursor.execute(cursor.execute(f"DELETE FROM {table_name} WHERE {where_col} = '{i}';"))
-        #cursor.commit()
+        cursor.execute(f"DELETE FROM {table_name} WHERE {where_col} = '{i}';")
+        cursor.commit()
     cursor.close()
     return True
+
+def ejecutar_sp(connect, query, fechaini, fechafin):
+
+    if fechaini == None:
+        dates=get_date()
+        fechaini = dates[0]
+        fechafin   = dates[1]
+    start_date=fechaini
+    end_date=fechafin
+    print(start_date)
+    print(end_date)
+    
+    #sp = f"Exec [dbo].[Carga_PeopleAnalytics] '{Fecha_1}','{Fecha_2}'" 
+    sp=query.replace("p_FechaInicio",(str(start_date))).replace("p_FechaFin",(str(end_date)))
+
+    connect.autocommit = True
+    cursor = connect.cursor()
+    cursor.execute(sp)
+    #codigo=cursor.fetchone()
+    cursor.close() 
+    print("SP:: Process successful")
+
+    return True       
+
+
+def select_df_stage(connect, table_name) -> dict:
+
+    query = f""" SELECT * FROM {table_name} ; """
+    df = pd.read_sql_query(text(query), connect)
+
+    return df

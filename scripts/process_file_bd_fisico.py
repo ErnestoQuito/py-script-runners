@@ -4,7 +4,7 @@ import pandas as pd
 from modules.functions_for_tables import select_table,ejecutar_sp,select_df_stage
 from modules.services_db import MariaDbConnection
 from modules.module_insert import insert_table
-from tranform.transform_digital import tranform_data_digital
+from tranform.tranform_fisico import tranform_data_fisico
 
 
 # VARIABLE FOR PROCESS
@@ -15,11 +15,11 @@ PASSW = os.getenv('HOST', 'ZJv5c7CspU')
 PORT = os.getenv('PORT', 3306)
 
 ID_TABLE_STAGE_DB = 2
-ID_TABLE_DB = 3
+ID_TABLE_DB = 5
 TABLE_DB = 'configuracion_db'
 WHERE_COL_DB = 'id_db'
-ID_TEMP = 4
-ID_SP = 2
+ID_TEMP = 6
+ID_SP = 3
 SP_DB = 'configuracion_store_procedure'
 WHERE_COL_SP = 'id_sp'
 
@@ -44,8 +44,7 @@ try:
     
     df_read = select_df_stage(connect=engine, table_name=a_bd_stage)
     
-    df_notif=tranform_data_digital(df_read)
-    print(df_notif)
+    df_notif=tranform_data_fisico(df_read)
     
     if df_notif.empty:
         print("Proceso cancelado: No se encontraron datos para la carga de información")

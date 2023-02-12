@@ -1,6 +1,5 @@
 import pandas as pd
 import os
-from datetime import datetime
 
 def read_files_excel(path_file: str):
     """Funcion de lectura de archivos excel
@@ -24,34 +23,6 @@ def read_files_excel(path_file: str):
     
     df = pd.concat(all_files,ignore_index='True')  
     
-    df.rename(columns={
-        'Guía' : 'guia',
-        'Resolución' : 'resolucion',
-        'Fecha Resolución' : 'fecha_resolucion',
-        'Expediente' : 'expediente',
-        'Teléfono' : 'telefono',
-        'Nombre Cliente' : 'nombre_cliente',
-        'Analista' : 'analista',
-        'Fecha Despacho' : 'fecha_despacho',
-        'Dirección' : 'direccion',
-        'Distrito' : 'distrito',
-        'Provincia' : 'provincia',
-        'Departamento' : 'departamento',
-        'Anexo' : 'anexo',
-        'Tipo Reenvío' : 'tipo_reenvio',
-        'Tipo Solucion' : 'tipo_solucion',
-        'Número Reenvío' : 'numero_reenvio',
-        'Correo electrónico' : 'correo_electronico',
-        'Fecha Reclamo' : 'fecha_reclamo',
-        'Canal Despacho' : 'canal_despacho',
-        'Instancia' : 'instancia',
-        'NOTIFICACION_CORREO' : 'notificacion_correo',
-        'FileName' : 'file_name',
-    }, inplace=True)
-
-    df['load_date']= datetime.now()
-
-
     return df
     
 
@@ -61,15 +32,16 @@ def read_pdf_paginas(path_file: str):
 
     files = finder_files(path_file)
 
-    df = pd.DataFrame(columns=['fileName', 'fileLocation', 'pageNumber'])
+    df = pd.DataFrame(columns=['resolucion','pdf_name', 'pdf_ruta', 'pdf_paginas'])
 
     for f in files:
         if f.endswith(".pdf"):
             pdf=PdfFileReader(open(os.path.join(path_file, f),'rb'), strict=False)
-            df2 = pd.DataFrame([[os.path.basename(f), os.path.join(path_file,f), pdf.getNumPages()]], columns=['fileName', 'fileLocation', 'pageNumber'])
+            df2 = pd.DataFrame([[os.path.basename(f), os.path.basename(f), os.path.join(path_file,f), pdf.getNumPages()]], columns=['resolucion','pdf_name', 'pdf_ruta', 'pdf_paginas'])
             df = pd.concat([df,df2])
             
     df.reset_index(drop=True, inplace=True)
+    df['resolucion'] = df['resolucion'].map(lambda x : str(x).replace('.pdf',''))
 
     return df
 
