@@ -1,9 +1,11 @@
 import os
 from datetime import datetime
 from modules.functions_for_tables import select_table
+from modules.functions_for_tables import insert_to_table
 from modules.commons import set_format_path_to_date
 from modules.services_db import MariaDbConnection
 from modules.services_sftp import ServicesSFTP
+from modules.commons import get_metada_from_file
 
 # VARIABLE FOR PROCESS
 HOST = os.getenv('HOST', '198.100.154.133')
@@ -36,7 +38,10 @@ try:
     result_path_files_saved = serv_sftp.download_files(
         remote_path_file=list_path_files, local_path_file=format_path_file_target
     )
-    
+
+    for item in result_path_files_saved:
+        result_meta_data_file = get_metada_from_file(item)
+        insert_to_table(maria.conn, get_metada_from_file(item), 'log_archivos')
 
 except Exception as err:
     print(err.__class__, err)
