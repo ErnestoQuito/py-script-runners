@@ -52,3 +52,17 @@ def set_format_path_to_date(
     if auto_date:
         return my_date.strftime(format_root_path)
     return my_date.strftime(format_root_path)
+
+def get_metada_from_file(path_file: str):
+    path_local = os.path.dirname(path_file).replace('\\', '\\\\')
+    name_file = os.path.basename(path_file)
+    size_file = os.path.getsize(path_file)
+    time_created = datetime.fromtimestamp(os.path.getctime(path_file)).strftime('%Y-%m-%d %H:%M:%S.%f')
+    time_modified = datetime.fromtimestamp(os.path.getmtime(path_file)).strftime('%Y-%m-%d %H:%M:%S.%f')
+    return dict(
+        archivo_ruta=path_local,
+        archivo_nombre=name_file,
+        archivo_tamano_bytes=size_file,
+        archivo_tiempo_creado=time_created,
+        archivo_tiempo_modificado=time_modified
+    )

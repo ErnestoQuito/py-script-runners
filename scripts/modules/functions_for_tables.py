@@ -22,7 +22,7 @@ def select_table(connect, table_name, where_col, id_table) -> dict:
 
     for idx, i in enumerate(resultado):
         table_dict[columns[idx]] = i
-
+    cursor.close()
     return table_dict
 
 def get_date():
@@ -43,6 +43,16 @@ def delete_table(connect, table_name, where_col, file_name: list) -> dict:
     cursor.close()
     return True
 
+def insert_to_table(conn, data: dict, table_name: str):
+    cursor = conn.cursor()
+    cols = ', '.join([i for i in data])
+    rows = ', '.join([f"'{i}'" for i in data.values()])
+    sql_statement = f'INSERT INTO {table_name}({cols}) VALUE ({rows})'
+    cursor.execute(sql_statement)
+    conn.commit()
+    cursor.close()
+    return
+
 def ejecutar_sp(connect, query, fechaini, fechafin):
 
     if fechaini == None:
@@ -53,19 +63,18 @@ def ejecutar_sp(connect, query, fechaini, fechafin):
     end_date=fechafin
     print(start_date)
     print(end_date)
-    
-    #sp = f"Exec [dbo].[Carga_PeopleAnalytics] '{Fecha_1}','{Fecha_2}'" 
+
+    #sp = f"Exec [dbo].[Carga_PeopleAnalytics] '{Fecha_1}','{Fecha_2}'"
     sp=query.replace("p_FechaInicio",(str(start_date))).replace("p_FechaFin",(str(end_date)))
 
     connect.autocommit = True
     cursor = connect.cursor()
     cursor.execute(sp)
     #codigo=cursor.fetchone()
-    cursor.close() 
+    cursor.close()
     print("SP:: Process successful")
 
-    return True       
-
+    return True
 
 def select_df_stage(connect, table_name) -> dict:
 
