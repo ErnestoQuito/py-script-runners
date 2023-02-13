@@ -31,7 +31,7 @@ class MariaDbConnection:
     def open_conn_engine(self):
         #sc = f"mssql+pyodbc://{self.USER}:{self.PASSWORD}@{self.HOST}:1433/{self.NAME}?driver={driver}"
         sc="mysql+pymysql://{0}:{1}@{2}:{3}/{4}".format(self.USER, self.PASSWORD, self.HOST, self.PORT, self.NAME)
-        self.engine = sqlalchemy.create_engine(sc)
+        self.engine = sqlalchemy.create_engine(sc, isolation_level='AUTOCOMMIT')
         return self.engine.connect()
 
     def open_conn_pymysql(self):

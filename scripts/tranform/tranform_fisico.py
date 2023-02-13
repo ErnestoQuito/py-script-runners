@@ -6,7 +6,7 @@ from pandas import DataFrame
 def tranform_data_fisico(data: DataFrame):
     # TODO
     #data = np.where((data['CorreoElectronico'].isnull()) & (data['id']< 1000))
-    dataf = data[data['CorreoElectronico'].isnull()]
+    dataf = data[data['correo_electronico'].isnull()]
     
     return dataf
 

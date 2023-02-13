@@ -47,7 +47,7 @@ except Exception as err:
     print(err.__class__, err)
 finally:
     mssql.close_conn()
-
+"""
 
 """
 import pandas as pd
@@ -72,3 +72,8 @@ print(df)
 df.to_sql('prueba', con = engine, schema='admin_servicio', if_exists='append', chunksize=200, method='multi', index=False)
 
 print('hecho')
+"""
+from modules.functions_for_tables import get_date
+
+a = get_date()
+print(a)
