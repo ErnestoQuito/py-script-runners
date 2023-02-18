@@ -73,7 +73,7 @@ df.to_sql('prueba', con = engine, schema='admin_servicio', if_exists='append', c
 
 print('hecho')
 """
-from modules.functions_for_tables import get_date
-
-a = get_date()
+from modules.module_read_files import read_pdf_paginas
+path_file = "D:\\runners_source_files\\notificaciones\\2023\\02\\01"
+a = read_pdf_paginas(path_file)
 print(a)

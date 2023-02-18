@@ -53,32 +53,29 @@ def insert_to_table(conn, data: dict, table_name: str):
     cursor.close()
     return
 
-def ejecutar_sp(connect, query, fechaini, fechafin):
-
+def ejecutar_sp(connect, query):
+    """
     if fechaini == None:
         dates=get_date()
         fechaini = dates[0]
         fechafin   = dates[1]
     start_date=fechaini
     end_date=fechafin
-    print(start_date)
-    print(end_date)
-
-    #sp = f"Exec [dbo].[Carga_PeopleAnalytics] '{Fecha_1}','{Fecha_2}'"
+    
     sp=query.replace("p_FechaInicio",(str(start_date))).replace("p_FechaFin",(str(end_date)))
-
+    """
     connect.autocommit = True
     cursor = connect.cursor()
-    cursor.execute(sp)
+    cursor.execute(query)
     #codigo=cursor.fetchone()
     cursor.close()
     print("SP:: Process successful")
 
     return True
 
-def select_df_stage(connect, table_name) -> dict:
+def select_df_stage(connect, table_name, where_name, id_flag) -> dict:
 
-    query = f""" SELECT * FROM {table_name} ; """
+    query = f""" SELECT * FROM {table_name} WHERE {where_name} = {id_flag} ; """
     df = pd.read_sql_query(text(query), connect)
 
     return df

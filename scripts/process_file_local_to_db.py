@@ -6,7 +6,7 @@ from modules.commons import set_format_path_to_date
 from modules.services_db import MariaDbConnection
 from modules.module_read_files import read_files_excel,read_pdf_paginas
 from modules.module_insert import insert_table
-from modules.transform import transform_notificaciones
+from tranform.transform import transform_notificaciones
 
 
 # VARIABLE FOR PROCESS
@@ -43,8 +43,6 @@ try:
 
     sp_db: dict = select_table(maria.conn, table_name=SP_DB, where_col=WHERE_COL_SP, id_table=ID_SP)
     a_sp= sp_db.get("name_procedure")
-    a_fecha_inicio= sp_db.get("fecha_inicio")
-    a_fecha_fin= sp_db.get("fecha_fin")
     
     df_read = read_files_excel(format_path_file_target)
     df_read_pdf = read_pdf_paginas(format_path_file_target)
@@ -56,9 +54,7 @@ try:
     else:      
         print("Inciando insert")
         msg_insert_temp = insert_table(data=df_notif, msg_boolean=True, connect=engine, table_name=a_temp, schema_name=a_bd)
-        #msg_insert = insert_table(data=df_notif, msg_boolean=True, connect=engine, table_name=a_table, schema_name=a_bd)
-        
-        ejecutar_sp(maria.conn, query=a_sp, fechaini=a_fecha_inicio, fechafin=a_fecha_fin)
+        ejecutar_sp(maria.conn, query=a_sp)
 
         print('OK -> Proceso finalizado')
     
