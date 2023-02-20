@@ -66,3 +66,8 @@ def get_metada_from_file(path_file: str):
         archivo_tiempo_creado=time_created,
         archivo_tiempo_modificado=time_modified
     )
+
+def create_folders(new_path: str):
+    if not os.path.exists(new_path):
+        os.makedirs(new_path)
+    return new_path
