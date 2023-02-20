@@ -66,3 +66,19 @@ def get_metada_from_file(path_file: str):
         archivo_tiempo_creado=time_created,
         archivo_tiempo_modificado=time_modified
     )
+
+def create_folders(new_path: str):
+    if not os.path.exists(new_path):
+        os.makedirs(new_path)
+    return new_path
+
+def writte_file_html(path_to_html: str, name_to_html: str, content: str, **data):
+    with open(os.path.join(path_to_html, name_to_html), 'w') as to_html:
+        to_html.write(
+            content.format(
+                nombre_cliente=data['nombre_cliente'],
+                numero_servicio=data['numero_servicio'],
+                numero_reclamo=data['numero_reclamo'],
+                fecha_reclamo=data['fecha_reclamo']
+            )
+        )
