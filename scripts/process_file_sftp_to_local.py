@@ -6,6 +6,7 @@ from modules.commons import set_format_path_to_date
 from modules.services_db import MariaDbConnection
 from modules.services_sftp import ServicesSFTP
 from modules.commons import get_metada_from_file
+from modules.commons import create_folders
 
 # VARIABLE FOR PROCESS
 HOST = os.getenv('HOST', '198.100.154.133')
@@ -27,6 +28,9 @@ maria.open_conn()
 try:
     table_sftp: dict = select_table(maria.conn, table_name=TABLE_SFTP, where_col=WHERE_COL_SFTP, id_table=ID_TABLE_SFTP)
     format_path: str = set_format_path_to_date(table_sftp['ruta'], unix=True, auto_date=False, my_date=datetime(2023, 2, 1))
+
+    # CREATE FOLDER ROOT
+    create_folders(new_path=format_path)
 
     # SFTP
     serv_sftp = ServicesSFTP(host=table_sftp['servidor'], user=table_sftp['usuario'], password=table_sftp['contrasena'])
