@@ -15,7 +15,7 @@ PASSW = os.getenv('HOST', 'ZJv5c7CspU')
 PORT = os.getenv('PORT', 3306)
 
 ID_TABLE_DB_NOTIF = 1
-WHERE_COL_DB_NOTIF = 'flag_estado'
+WHERE_COL_DB_NOTIF = 'flag_estado_procesado'
 TABLE_DB = 'configuracion_db'
 WHERE_COL_DB = 'id_db'
 ID_TABLE_DB = 3
@@ -43,7 +43,7 @@ try:
     a_sp= sp_db.get("name_procedure")
     
     df_read = select_df_stage(connect=engine, table_name=a_bd_noft, where_name=WHERE_COL_DB_NOTIF, id_flag=0)
-    df_read.drop(['flag_estado'], axis=1, inplace=True)
+    df_read.drop(['flag_estado_procesado'], axis=1, inplace=True)
     df_notif=tranform_data_digital(df_read)
     
     if df_notif.empty:

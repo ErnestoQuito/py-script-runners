@@ -42,7 +42,7 @@ def read_pdf_paginas(path_file: str):
             
     df.reset_index(drop=True, inplace=True)
     df['resolucion'] = df['resolucion'].map(lambda x : str(x).replace('.pdf',''))
-    df['pdf_fecha'] = path_file[-10:].replace('\\','-')
+    df['fecha_consulta_ruta_local'] = path_file[-10:].replace('\\','-')
 
     return df
 
