@@ -18,7 +18,7 @@ def copy_files(source: str, target: str):
     return shutil.copy2(source, target)
 
 def find_excel(path_file: str):
-    """Funcion ´para encontrar los archivos excel de un lista
+    """Funcion para encontrar los archivos excel de un lista
 
     Args:
         path_file (str): ruta de archivos
