@@ -2,6 +2,7 @@ import os
 import shutil
 from datetime import datetime
 
+
 def finder_files(path_string: str):
     return [os.path.abspath(resource.path) for resource in os.scandir(path_string)]
 
@@ -82,3 +83,13 @@ def writte_file_html(path_to_html: str, name_to_html: str, content: str, **data)
                 fecha_reclamo=data['fecha_reclamo']
             )
         )
+
+def move_files(msg_boolean:bool, ruta_destino:str, ruta_a_mover:str, name_file:str):
+
+    if msg_boolean:
+        
+        shutil.move(ruta_destino +"\\"+name_file , ruta_a_mover +"\\"+name_file)
+        
+        return True
+    else:
+        return False

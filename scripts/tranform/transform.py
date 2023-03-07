@@ -43,3 +43,30 @@ def transform_notificaciones(df_excel: DataFrame,df_pdf: DataFrame):
     df['fecha_reclamo'] =  pd.to_datetime(df['fecha_reclamo'], format='%d/%m/%Y')
 
     return df
+
+
+def transform_reporte(df_excel: DataFrame):
+
+    df_excel.rename(columns={
+                    'Campaña' : 'campana',
+                    'Correo Electronico' : 'correo_electronico',
+                    'Asunto' : 'asunto',
+                    'Correo remitente' : 'correo_remitente',
+                    'Fecha creacion' : 'fecha_creacion',
+                    'Fecha de envio' : 'fecha_envio',
+                    'Fecha estado' : 'fecha_estado',
+                    'Estado' : 'estado',
+                    'URL Clic' : 'url_clic',
+                    'Adjuntos' : 'adjuntos',
+                    'Codigo' : 'codigo',
+                    'URL HTML' : 'url_html',
+                    'Correo Valido' : 'correo_valido',
+                    'Fecha primer apertura' : 'fecha_primer_apertura',
+                    'Segmento' : 'segmento',
+                    'FileName' : 'file_name',
+                }, inplace=True)
+
+    df_excel['load_date']= datetime.now()
+    
+
+    return df_excel

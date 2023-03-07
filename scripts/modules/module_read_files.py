@@ -20,7 +20,9 @@ def read_files_excel(path_file: str):
             df=pd.read_excel(i)
             df['FileName']= os.path.basename(i)
             all_files.append(df)
-    
+        else:
+            df=pd.DataFrame()
+            all_files.append(df)
     df = pd.concat(all_files,ignore_index='True')  
     
     return df
@@ -69,3 +71,32 @@ def val_pdf_excel(path_file: str):
         return False
     
      
+def read_report_excel(path_file: str, path_destino:str):
+    """Funcion de lectura de archivos excel
+
+    Args:
+        path_file (str): ruta de archivos
+
+    Returns:
+        dataFrame: Retorna el contenido de los archivos excel unificados
+    """
+    from modules.commons import finder_files
+    from modules.commons import move_files
+
+    files = finder_files(path_file)
+    
+    all_files = []
+    for i in files:
+        name_f = os.path.basename(i)
+        if i.endswith('.xlsx'):
+            df=pd.read_excel(i)
+            df['FileName']= os.path.basename(i)
+            all_files.append(df)
+            
+            move_files(msg_boolean=True,ruta_destino=path_file,ruta_a_mover=path_destino,name_file=name_f)
+        else:
+            df=pd.DataFrame()
+            all_files.append(df)
+    df = pd.concat(all_files,ignore_index='True')  
+    
+    return df     
