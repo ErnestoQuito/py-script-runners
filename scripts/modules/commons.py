@@ -38,12 +38,54 @@ def find_excel(path_file: str):
 
     return archivos
 
-def set_format_path_to_date(
+def set_format_path_to_date_per(
     root_path: str,
     auto_date: bool = True,
     unix: bool = False,
     my_date: datetime = datetime.now()
-    ):
+    ) -> str:
+    import locale
+    locale.setlocale(locale.LC_ALL, 'es_ES')
+    """Funcion para establecer la ruta donde se buscara los archivos. Esta funcion fue personalizada.
+
+    Args:
+        root_path (str): RUta raiz de los archivos.
+        auto_date (bool, optional): Indica si se establecera con una fecha automatica. Por defecto True.
+        unix (bool, optional): True indica si la ruta es con el formato de Linux o False para Windows. Por defecto False.
+        my_date (datetime, optional): Fecha enviada por el usuario.
+        Sino se envia nada se establece la fecha actual. Defaults to datetime.now().
+
+    Returns:
+        str: Retorna la ruta con fecha.
+    """
+
+    if unix:
+        format_root_path = f'{root_path}/%d.%B.%y/FISICO/%d.%m.%y'
+    else:
+        format_root_path = os.path.join(os.path.abspath(root_path), '%Y', '%m', '%d')
+
+    if auto_date:
+        return my_date.strftime(format_root_path).upper()
+    return my_date.strftime(format_root_path).upper()
+
+def set_format_path_to_date_estandar(
+    root_path: str,
+    auto_date: bool = True,
+    unix: bool = False,
+    my_date: datetime = datetime.now()
+    ) -> str:
+    """Funcion para establecer la ruta donde se buscara los archivos. Es una funcion estandar
+
+    Args:
+        root_path (str): RUta raiz de los archivos.
+        auto_date (bool, optional): Indica si se establecera con una fecha automatica. Por defecto True.
+        unix (bool, optional): True indica si la ruta es con el formato de Linux o False para Windows. Por defecto False.
+        my_date (datetime, optional): Fecha enviada por el usuario.
+        Sino se envia nada se establece la fecha actual. Defaults to datetime.now().
+
+    Returns:
+        str: Retorna la ruta con fecha.
+    """
 
     if unix:
         format_root_path = f'{root_path}/%Y/%m/%d'
