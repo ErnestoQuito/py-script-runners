@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import numpy as np
 from sqlalchemy import text
 from modules.services_masivian import MasivBasicApi
 from modules.functions_for_tables import insert_to_table
@@ -21,7 +22,7 @@ mariadb = MariaDbConnection(
     h_port=PORT
 )
 mariadb.open_conn_engine()
-# mariadb.open_conn()
+mariadb.open_conn()
 try:
     # Creacion cuerpo para envio masiv
     base_datos = {
@@ -102,48 +103,71 @@ try:
         'Recipients': []
     }
     base_notificaciones = pd.read_sql(
-        text("""SELECT correo_electronico, nombre_cliente, telefono, expediente, fecha_reclamo
-FROM `base_notificaciones` WHERE `fecha_consulta_ruta_local` = '2023-02-01' AND flag_estado_procesado=1;"""),
+        text("""SELECT bn.id
+       , bn.correo_electronico
+       , bn.nombre_cliente
+       , bn.telefono
+       , bn.expediente
+       , bn.fecha_reclamo
+       , bn.pdf_ruta
+       , bn.pdf_name
+FROM admin_servicio.base_notificaciones bn
+WHERE CAST(bn.fecha_consulta_ruta_local AS DATE) = '2023-02-01' AND bn.flag_envio_digital = True;"""),
         con=mariadb.engine.connect()
     )
-    counter: int = 0
-    recipients: list = []
-    for row in base_notificaciones.itertuples():
-        if counter < 5:
+    total_rows = len(base_notificaciones)
+    div_rows = total_rows/500
+    split_df =  div_rows + (1 - (div_rows - int(div_rows)))
+    if total_rows < 500:
+        split_df = 1
+    if total_rows % 500 == 0:
+        split_df = total_rows/500
+
+    for dfs_chuck in np.array_split(base_notificaciones, split_df):
+        recipients: list = []
+        for row in dfs_chuck.itertuples():
             recipients.append({
-                'To': row[1],
+                'To': row[2],
                 'Parameters': [
                     {
                         'Name': 'nombre_cliente',
                         'Type': 'text',
-                        'Value': row[2]
+                        'Value': row[3]
                     },{
                         'Name': 'numero_servicio',
                         'Type': 'text',
-                        'Value': row[3]
+                        'Value': row[4]
                     },{
                         'Name': 'numero_reclamo',
                         'Type': 'text',
-                        'Value': row[4]
+                        'Value': row[5]
                     },{
                         'Name': 'fecha_reclamo',
                         'Type': 'text',
-                        'Value': row[5].strftime('%Y-%m-%d')
+                        'Value': row[6].strftime('%Y-%m-%d')
+                    }
+                ],
+                'Attachments': [
+                    {
+                        'Path': row[7],
+                        'Filename': row[8]
                     }
                 ]
             })
-        counter += 1
-    base_datos['Recipients'] = recipients
-    print(base_datos)
-    # Envio de destinatarios
-    # masiva_api = MasivBasicApi(
-    #     url='https://api.masiv.masivian.com/email/v1/delivery',
-    #     username='Peru_Aleph_Movistar_Hasber_5D2FC',
-    #     password='Sz62cO4]H-'
-    # )
-    # masiva_api.send_masiv_email(base_datos)
-    # Obtener y guardar response del envio
-    # insert_to_table(conn=, data=, table_name='log_envio_masiv')
+
+        base_datos['Recipients'] = recipients
+        # print(base_datos)
+        # Envio de destinatarios
+        masiva_api = MasivBasicApi(
+            url='https://api.masiv.masivian.com/email/v1/delivery',
+            username='Peru_Aleph_Movistar_Hasber_5D2FC',
+            password='Sz62cO4]H-'
+        )
+        response = masiva_api.send_masiv_email(base_datos)
+        response['cant_enviado'] = len(dfs_chuck)
+        response['fecha_de_proceso'] = '2023-02-01'
+        # Obtener y guardar response del envio
+        insert_to_table(conn=mariadb.conn, data=response, table_name='log_envio_masiv')
 except Exception as err:
     print(err)
     print(err.__class__)
