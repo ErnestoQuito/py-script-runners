@@ -35,7 +35,7 @@ class ServicesSFTP(object):
         ) as sfpt:
             for pr in remote_path_file:
                 local_path_contruyed = os.path.abspath(os.path.join(local_path_file, os.path.basename(pr)))
-                result = sfpt.get(
+                sfpt.get(
                     remotepath=pr,
                     localpath=local_path_contruyed
                 )
@@ -43,12 +43,16 @@ class ServicesSFTP(object):
         return path_saved
 
     def list_files(self, remote_path_file):
+        list_path_files: list = []
         with pysftp.Connection(
             host=self.host,
             username=self.username,
             password=self.password,
             cnopts=self.cnopts
         ) as sfpt:
-            files = sfpt.listdir(remotepath=remote_path_file)
-            list_path_files = [f'{remote_path_file}/{os.path.basename(f)}' for f in files]
+            files = sfpt.listdir(remotepath=remote_path_file)[:10]
+            for f in files:
+                path_file = f'{remote_path_file}/{os.path.basename(f)}'
+                if len(f.split('.')) > 1:
+                    list_path_files.append(path_file)
         return list_path_files

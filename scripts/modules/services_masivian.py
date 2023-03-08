@@ -19,4 +19,8 @@ class MasivBasicApi:
             'Content-Type': 'application/json'
         }
         response = requests.post(self.url, headers=headers, json=content)
-        return json.loads(response.json())
+        response_dict = response.json()
+        response_dict['data'] = f"deliveryId:{response_dict['data'].get('deliveryId', '')}"
+        response_dict['status_code'] = response.status_code
+
+        return response_dict

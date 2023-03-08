@@ -1,4 +1,4 @@
-from modules.commons import set_format_path_to_date
+from modules.commons import set_format_path_to_date_per
 # data = {'nombre_cliente': 'Ernesto Quito Gonzales',
 #                 'numero_servicio':'hjishfiafh',
 #                 'numero_reclamo':'RECLAMO-51545',
@@ -12,5 +12,6 @@ from modules.commons import set_format_path_to_date
 #             )
 #         )
 
-ruta = '/DESPACHO_ROBOT'
-print(set_format_path_to_date(root_path=ruta))
+ruta = '/SSH/Despacho UE/DESPACHO_ROBOT'
+print(set_format_path_to_date_per(root_path=ruta, unix=True))
+print(set_format_path_to_date_per(root_path=ruta, unix=False))
